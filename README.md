@@ -46,19 +46,19 @@ This module provides **AI-powered anomaly detection** for network traffic analys
 ## 🚀 How to Use
 
 ### 1. Train the Model (if needed)
-
+```bash
 python -m detection.ai_train
-
+```
 
 ### 2. Run Detection with AI
-
+```bash
 python -m detection.cli --pcap sample.pcap --out-dir ./out
-
+```
 
 ### 3. View AI Alerts
-
+```bash
 cat out/alerts.jsonl | grep AI_ANOMALY
-
+```
 
 ---
 
@@ -74,7 +74,7 @@ cat out/alerts.jsonl | grep AI_ANOMALY
 [+] 104 alerts generated
 ```
 
-
+---
 
 ## 🏆 Why This AI Model is Powerful
 
@@ -96,3 +96,13 @@ This module is fully integrated with:
 - ✅ **Signature Engine** (rules.json)
 - ✅ **Beaconing Detection**
 - ✅ **Chain-of-Custody** (SHA-256 hashing)
+
+---
+
+## 📚 References
+
+- Isolation Forest: https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html
+- CTU Normal PCAPs: https://www.stratosphereips.org/datasets-overview
+```
+
+---

@@ -103,6 +103,5 @@ This module is fully integrated with:
 
 - Isolation Forest: https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html
 - CTU Normal PCAPs: https://www.stratosphereips.org/datasets-overview
-```
 
----
+ ---

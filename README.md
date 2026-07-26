@@ -105,7 +105,7 @@ This module is fully integrated with:
 
 ## 👥 Team Contribution
 
-- **Harnish S Raval**: AI Module Development (Isolation Forest, Feature Engineering, Integration, Testing)
+- **Harnish S Raval**: AI Module Development (Isolation Forest, Feature Engineering, Integration)
 - **Keval Punchal**: Testing Model And Bug Fixing
 
 ---

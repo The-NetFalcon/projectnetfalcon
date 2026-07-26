@@ -50,14 +50,23 @@ This module provides **AI-powered anomaly detection** for network traffic analys
 ### 1. Train the Model (if needed)
 ```bash
 python -m detection.ai_train
-2. Run Detection with AI
-bash
+```
+
+### 2. Run Detection with AI
+```bash
 python -m detection.cli --pcap sample.pcap --out-dir ./out
-3. View AI Alerts
-bash
+```
+
+### 3. View AI Alerts
+```bash
 cat out/alerts.jsonl | grep AI_ANOMALY
-📈 Sample Output
-text
+```
+
+---
+
+## 📈 Sample Output
+
+```
 [+] Initializing Enhanced AI Anomaly Detector...
 [+] Enhanced AI Detector ready!
 [+] Running Enhanced AI Anomaly Detection on flows...
@@ -65,26 +74,45 @@ text
 [AI] Anomaly detected: 192.168.1.77 -> 203.0.113.99 (Packets: 1/0)
 [+] AI detected 33 anomalous flows
 [+] 104 alerts generated
+```
 
 ---
 
-🔗 Integration
+## 🏆 Why This AI Model is Powerful
+
+| Feature | Basic Model | Enhanced Model |
+|---------|-------------|----------------|
+| Training Flows | 32 | **500,000+** |
+| Training Packets | ~100 | **23,000,000+** |
+| Training Data Size | ~1 MB | **15 GB** |
+| Features | 9 | **21** |
+| Detection Accuracy | Basic | **High** |
+| False Positives | Higher | **Lower** |
+| Real-World Training | No | **Yes (15 GB CTU data)** |
+
+---
+
+## 🔗 Integration
+
 This module is fully integrated with:
+- ✅ **Ingestion** (PcapImporter)
+- ✅ **DPI** (DNS/HTTP/SMTP decoding)
+- ✅ **Signature Engine** (rules.json)
+- ✅ **Beaconing Detection**
+- ✅ **Chain-of-Custody** (SHA-256 hashing)
 
-✅ Ingestion (PcapImporter)
+---
 
-✅ DPI (DNS/HTTP/SMTP decoding)
+## 👥 Team Contribution
 
-✅ Signature Engine (rules.json)
+- **Harnish S Raval**: AI Module Development (Isolation Forest, Feature Engineering, Integration, Testing)
+- **Keval Punchal**: Testing Model And Bug Fixing
 
-✅ Beaconing Detection
+---
 
-✅ Chain-of-Custody (SHA-256 hashing)
+## 📚 References
 
-👥 Team Contribution
-Harnish Raval: AI Module Development (Isolation Forest, Feature Engineering, Integration, Testing)
+- Isolation Forest: https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html
+- CTU Normal PCAPs: https://www.stratosphereips.org/datasets-overview
+```
 
-📚 References
-Isolation Forest: https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html
-
-CTU Normal PCAPs: https://www.stratosphereips.org/datasets-overview

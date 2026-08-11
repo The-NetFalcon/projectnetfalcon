@@ -1,0 +1,60 @@
+[
+    {
+        "id": "SIG001",
+        "name": "Port Scan Detection",
+        "type": "port_scan",
+        "severity": "high",
+        "params": {
+            "window_seconds": 10,
+            "unique_ports_threshold": 20
+        }
+    },
+    {
+        "id": "SIG002",
+        "name": "DNS Tunneling",
+        "type": "dns_tunneling",
+        "severity": "critical",
+        "params": {
+            "qtypes": [
+                "TXT"
+            ],
+            "rdata_len_threshold": 100
+        }
+    },
+    {
+        "id": "SIG003",
+        "name": "SYN Flood",
+        "type": "syn_flood",
+        "severity": "critical",
+        "params": {
+            "window_seconds": 5,
+            "syn_count_threshold": 100
+        }
+    },
+    {
+        "id": "SIG004",
+        "name": "IOC Match",
+        "type": "ioc_match",
+        "severity": "critical",
+        "params": {
+            "ioc_list": [
+                "192.168.1.250",
+                "10.10.10.10"
+            ]
+        }
+    },
+    {
+        "id": "SIG005",
+        "name": "High Entropy Payload",
+        "type": "high_entropy_payload",
+        "severity": "medium",
+        "params": {
+            "plaintext_ports": [
+                21,
+                23,
+                80
+            ],
+            "entropy_threshold": 7.5
+        }
+    }
+]

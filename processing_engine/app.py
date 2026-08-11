@@ -34,7 +34,10 @@ Env vars:
 import os
 import threading
 import time
+from datetime import datetime
 from collections import defaultdict, deque
+
+    
 
 import joblib
 import requests
@@ -53,11 +56,13 @@ BACKEND_API_URL = os.environ.get("BACKEND_API_URL", "http://backend_api:5000")
 ANOMALY_SCORE_THRESHOLD = float(os.environ.get("ANOMALY_SCORE_THRESHOLD", "0.0"))
 
 app = Flask(__name__)
+app.config["DEBUG"] = True
 CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
 
 extractor = FeatureExtractor()
 hasher = LegalHasher(vault_path=VAULT_PATH)
+SERVICE_START_TIME = time.time()    
 
 import json as _json
 with open(RULES_PATH) as f:
@@ -251,11 +256,22 @@ def _forward_to_backend(alert: dict):
 # ==========================================================================
 @app.route("/health", methods=["GET"])
 def health():
+    uptime = int(time.time() - SERVICE_START_TIME)
+
     return jsonify({
-        "status": "ok",
+        "status": "healthy",
+        "service": "NetFalcon Processing Engine",
+        "version": "1.0.0",
+
         "model_loaded": _model_bundle is not None,
         "rules_loaded": len(SIGNATURE_RULES),
-        "alerts_in_memory": len(ALERTS),
+
+        "alerts": len(ALERTS),
+        "incidents": len(INCIDENTS),
+        "evidence_records": len(hasher.all_evidence()),
+
+        "uptime_seconds": uptime,
+        "timestamp": datetime.utcnow().isoformat() + "Z"
     })
 
 
@@ -307,7 +323,17 @@ def get_evidence(evidence_id):
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8001))
-    print(f"[processing_engine] Starting on :{port} "
-          f"(model={'loaded' if _model_bundle else 'MISSING'}, "
-          f"rules={len(SIGNATURE_RULES)}, backend={BACKEND_API_URL})")
-    socketio.run(app, host="0.0.0.0", port=port)
+
+    print(
+        f"[processing_engine] Starting on :{port} "
+        f"(model={'loaded' if _model_bundle else 'MISSING'}, "
+        f"rules={len(SIGNATURE_RULES)}, backend={BACKEND_API_URL})"
+    )
+
+    socketio.run(
+        app,
+        host="0.0.0.0",
+        port=port,
+        debug=False,
+        use_reloader=False
+    )

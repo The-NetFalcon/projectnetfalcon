@@ -15,6 +15,7 @@ Output format:
 }
 """
 
+import base64
 import math
 
 
@@ -29,10 +30,10 @@ class FeatureExtractor:
 
         packet_count = len(packets)
 
-        duration = max(
-            float(flow.get("duration", 0.001)),
-            0.001
-        )
+        start_ts = float(flow.get("start_ts", 0.0) or 0.0)
+        end_ts = float(flow.get("end_ts", 0.0) or 0.0)
+        derived_duration = (end_ts - start_ts) if end_ts and start_ts else 0.0
+        duration = max(float(flow.get("duration", derived_duration) or derived_duration), 0.001)
 
         total_bytes = float(flow.get("total_bytes", 0))
 
@@ -145,17 +146,22 @@ class FeatureExtractor:
 
         total = 0
 
-        for payload in packets:
+        for packet in packets:
+            payload = b""
 
-            if isinstance(payload, bytes):
+            if isinstance(packet, (bytes, bytearray)):
+                payload = bytes(packet)
+            elif isinstance(packet, dict):
+                encoded = packet.get("payload_b64", "")
+                if encoded:
+                    try:
+                        payload = base64.b64decode(encoded, validate=True)
+                    except (ValueError, TypeError):
+                        payload = b""
 
-                for b in payload:
-
-                    byte_frequency[b] = (
-                        byte_frequency.get(b, 0) + 1
-                    )
-
-                    total += 1
+            for b in payload:
+                byte_frequency[b] = byte_frequency.get(b, 0) + 1
+                total += 1
 
         if total == 0:
             return 0
